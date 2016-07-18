@@ -12,6 +12,8 @@ import time
 TITLE = "Disk Usage"
 VERSION = "0.0.0"
 VERBOSE = False
+WIDTH = 80
+COUNT = 20
 
 def now(on="on", at="at"):
     return "{}{} {}{}".format(on + " " if on != "" else "", time.strftime("%Y-%m-%d"), at + " " if at != "" else "", time.strftime("%H:%M:%S"))
@@ -35,16 +37,15 @@ def main():
         start = time.time()
     
     top = os.getcwd()
-    top="./Petr/Docs/_Documents" #####################################################
     print("Analyzing {}".format(top))
     usage = {}
     for path, dirs, files in os.walk(top):
-        print("\rScanning {: <80}".format(neat(path, 80)), end="")
+        print("\rScanning {: <{}}".format(neat(path, WIDTH), WIDTH), end="")
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
-    print("\r         {: <80}\r".format(""), end="")
+    print("\r         {: <{}}\r".format("", WIDTH), end="")
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
-    for i, (path, size) in enumerate(usage[:20]):
-        print("{:{}}/{} {} {}".format(i+1, digits(20), len(usage), size, path))
+    for i, (path, size) in enumerate(usage[:COUNT]):
+        print("{:{}}/{} {:{}} {}".format(i+1, digits(COUNT), len(usage), size, digits(usage[0][1]), path))
     
     if VERBOSE:
         elapsed = time.time() - start
