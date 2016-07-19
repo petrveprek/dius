@@ -23,8 +23,11 @@ def neat(str, max):
     if len(str) > max: str = str[:max-3] + "..."
     return str
 
-def digits(num, min=0):
-    return max(min, math.ceil(math.log10(num)))
+def nice(num):
+    return "{:,}".format(num)
+
+def digits(num, min=0, kmgt=False):
+    return len(nice(num)) if kmgt else max(min, math.ceil(math.log10(num)))
 
 def main():
     print("{} {}".format(TITLE, VERSION))
@@ -44,14 +47,14 @@ def main():
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
-    digsCount = digits(len(usage),2)
+    digsCount = digits(len(usage), min=2)
     total = sum(map(lambda pair: pair[1], usage))
-    digsTotal = digits(total)
+    digsTotal = digits(total, kmgt=True)
     for i, (path, size) in enumerate(usage[:COUNT]):
-        print("{:{}}/{} {:{}} {}".format(i+1, digsCount, len(usage), size, digsTotal, path))
+        print("{:{}}/{} {:>{}} {}".format(i+1, digsCount, len(usage), nice(size), digsTotal, path))
     if (COUNT < len(usage)):
-        print("{:>{}} {:{}}".format("OTHER", 2*digsCount+1, sum(map(lambda pair: pair[1], usage[COUNT:])), digsTotal))
-    print("{:>{}} {:{}}".format("TOTAL", 2*digsCount+1, total, digsTotal))
+        print("{:>{}} {:>{}}".format("OTHER", 2*digsCount+1, nice(sum(map(lambda pair: pair[1], usage[COUNT:]))), digsTotal))
+    print("{:>{}} {:>{}}".format("TOTAL", 2*digsCount+1, nice(total), digsTotal))
     
     if VERBOSE:
         elapsed = time.time() - start
