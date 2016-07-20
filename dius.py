@@ -8,6 +8,8 @@ TITLE = "Disk Usage"
 VERSION = "0.0.0"
 VERBOSE = False
 COUNT = 20
+class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
+MODE = Mode.plain
 WIDTH = 80
 
 def now(on="on", at="at"):
@@ -20,10 +22,8 @@ def printable(str, max):
     if len(str) > max: str = str[:max-3] + "..."
     return str
 
-class Mode(enum.Enum):
-    plain = 0
-    grouped = 1
-    gazillion = 2
+def plain(num):
+    return "{}".format(num)
 
 def grouped(num):
     return "{:,}".format(num)
@@ -35,11 +35,14 @@ def gazillion(num, suffix="B"):
         num /= 1024.0
     return "{:.1f}{}{}".format(num, 'Yi', suffix)
 
+def format(num, mode=Mode.plain):
+    return(
+        grouped(num)   if mode == Mode.grouped   else
+        gazillion(num) if mode == Mode.gazillion else
+        plain(num))
+
 def places(num, min=0, mode=Mode.plain):
-    return max(min,
-        len(grouped(num))   if mode==Mode.grouped else
-        len(gazillion(num)) if mode==Mode.gazillion else
-        math.ceil(math.log10(num)))
+    return max(min, len(format(num, mode)))
 
 def main():
     print("{} {}".format(TITLE, VERSION))
@@ -63,10 +66,18 @@ def main():
     total = sum(map(lambda pair: pair[1], usage))
     widthTotal = places(total, mode=Mode.gazillion)
     for i, (path, size) in enumerate(usage[:COUNT]):
-        print("{:{}}/{} {:>{}} {}".format(i+1, widthCount, len(usage), gazillion(size), widthTotal, path))
+        print("{:{}}/{} {:>{}} {}".format(
+            i+1, widthCount,
+            len(usage),
+            format(size, mode=Mode.gazillion), widthTotal,
+            path))
     if (COUNT < len(usage)):
-        print("{:>{}} {:>{}}".format("OTHER", 2*widthCount+1, gazillion(sum(map(lambda pair: pair[1], usage[COUNT:]))), widthTotal))
-    print("{:>{}} {:>{}}".format("TOTAL", 2*widthCount+1, gazillion(total), widthTotal))
+        print("{:>{}} {:>{}}".format(
+            "OTHER", 2*widthCount+1,
+            format(sum(map(lambda pair: pair[1], usage[COUNT:])), mode=Mode.gazillion), widthTotal))
+    print("{:>{}} {:>{}}".format(
+        "TOTAL", 2*widthCount+1,
+        format(total, mode=Mode.gazillion), widthTotal))
     
     if VERBOSE:
         elapsed = time.time() - start
