@@ -31,7 +31,7 @@ def grouped(num):
 def gazillion(num, suffix="B"):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if num < 1024.0:
-            return "{:5.1f}{}{}".format(num, unit, suffix)
+            return "{:5.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, unit, suffix)
         num /= 1024.0
     return "{:.1f}{}{}".format(num, 'Yi', suffix)
 
