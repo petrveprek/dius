@@ -9,7 +9,7 @@ VERSION = "0.0.0"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
-MODE = Mode.plain
+MODE = Mode.gazillion
 WIDTH = 80
 
 def now(on="on", at="at"):
@@ -64,20 +64,20 @@ def main():
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
     widthCount = places(len(usage), min=2)
     total = sum(map(lambda pair: pair[1], usage))
-    widthTotal = places(total, mode=Mode.gazillion)
+    widthTotal = places(total, mode=MODE)
     for i, (path, size) in enumerate(usage[:COUNT]):
         print("{:{}}/{} {:>{}} {}".format(
             i+1, widthCount,
             len(usage),
-            format(size, mode=Mode.gazillion), widthTotal,
+            format(size, mode=MODE), widthTotal,
             path))
     if (COUNT < len(usage)):
         print("{:>{}} {:>{}}".format(
             "OTHER", 2*widthCount+1,
-            format(sum(map(lambda pair: pair[1], usage[COUNT:])), mode=Mode.gazillion), widthTotal))
+            format(sum(map(lambda pair: pair[1], usage[COUNT:])), mode=MODE), widthTotal))
     print("{:>{}} {:>{}}".format(
         "TOTAL", 2*widthCount+1,
-        format(total, mode=Mode.gazillion), widthTotal))
+        format(total, mode=MODE), widthTotal))
     
     if VERBOSE:
         elapsed = time.time() - start
