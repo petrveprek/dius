@@ -2,7 +2,7 @@
 # Copyright (c) 2016 Petr Veprek
 """Disk Usage"""
 
-import enum, math, operator, os, string, sys, time
+import argparse, enum, math, operator, os, string, sys, time
 
 TITLE = "Disk Usage"
 VERSION = "0.0.0"
@@ -54,30 +54,33 @@ def main():
         print("Executed {}".format(now()))
         start = time.time()
     
-    top = os.getcwd()
-    print("Analyzing {}".format(top))
-    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("directory", nargs="?", help="top directory to analyze [%(default)s]", default=os.getcwd())
+    parser.add_argument("-c", "--count", help="number of largest directories to list [%(default)s]", type=int, default=COUNT)
+    arguments = parser.parse_args()
+    directory = arguments.directory
+    count = arguments.count
+    print("Analyzing {}".format(directory))
     usage = {}
-    for path, dirs, files in os.walk(top):
+    for path, dirs, files in os.walk(directory):
         print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
-    
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
     widthCount = places(len(usage), min=2)
-    other = sum(map(lambda pair: pair[1], usage[COUNT:]))
+    other = sum(map(lambda pair: pair[1], usage[count:]))
     total = sum(map(lambda pair: pair[1], usage))
     widthSize = max(
-        max(map(lambda pair: places(pair[1], mode=MODE), usage[:COUNT])),
+        max(map(lambda pair: places(pair[1], mode=MODE), usage[:count])),
         places(other, mode=MODE),
         places(total, mode=MODE))
-    for i, (path, size) in enumerate(usage[:COUNT]):
+    for i, (path, size) in enumerate(usage[:count]):
         print("{:{}}/{} {:>{}} {}".format(
             i+1, widthCount,
             len(usage),
             format(size, mode=MODE), widthSize,
             path))
-    if (COUNT < len(usage)):
+    if (count < len(usage)):
         print("{:>{}} {:>{}}".format(
             "OTHER", 2*widthCount+1,
             format(other, mode=MODE), widthSize))
