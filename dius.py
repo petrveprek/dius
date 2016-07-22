@@ -56,16 +56,18 @@ def main():
     
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", nargs="?", help="top directory to analyze [%(default)s]", default=os.getcwd())
-    parser.add_argument("-c", "--count", help="number of largest directories to list [%(default)s]", type=int, default=COUNT)
+    parser.add_argument("-c", "--count", help="number of largest directories to show [%(default)s]", type=int, default=COUNT)
     arguments = parser.parse_args()
     directory = arguments.directory
     count = arguments.count
+    
     print("Analyzing {}".format(directory))
     usage = {}
     for path, dirs, files in os.walk(directory):
         print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
+    
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
     widthCount = places(len(usage), min=2)
     widthIndex = places(min(count,len(usage)), min=5-1-widthCount)
@@ -76,18 +78,10 @@ def main():
         places(other, mode=MODE),
         places(total, mode=MODE))
     for i, (path, size) in enumerate(usage[:count]):
-        print("{:{}}/{} {:>{}} {}".format(
-            i+1, widthIndex,
-            len(usage),
-            format(size, mode=MODE), widthSize,
-            path))
+        print("{:{}}/{} {:>{}} {}".format(i+1, widthIndex, len(usage), format(size, mode=MODE), widthSize, path))
     if (count < len(usage)):
-        print("{:>{}} {:>{}}".format(
-            "OTHER", widthIndex+1+widthCount,
-            format(other, mode=MODE), widthSize))
-    print("{:>{}} {:>{}}".format(
-        "TOTAL", widthIndex+1+widthCount,
-        format(total, mode=MODE), widthSize))
+        print("{:>{}} {:>{}}".format("OTHER", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
+    print("{:>{}} {:>{}}".format("TOTAL", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
     
     if VERBOSE:
         elapsed = time.time() - start
