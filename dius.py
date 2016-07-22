@@ -33,7 +33,7 @@ def gazillion(num, suffix="B"):
         if num < 1024.0:
             return "{:5.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, unit, suffix)
         num /= 1024.0
-    return "{:.1f}{}{}".format(num, 'Yi', suffix)
+    return "{:.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, 'Yi', suffix)
 
 def format(num, mode=Mode.plain):
     return(
