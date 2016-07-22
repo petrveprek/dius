@@ -2,7 +2,7 @@
 # Copyright (c) 2016 Petr Veprek
 """Disk Usage"""
 
-import enum, math, operator, os, string, sys, time
+import argparse, enum, math, operator, os, string, sys, time
 
 TITLE = "Disk Usage"
 VERSION = "0.0.0"
@@ -31,7 +31,7 @@ def grouped(num):
 def gazillion(num, suffix="B"):
     for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
         if num < 1024.0:
-            return "{:6.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, unit, suffix)
+            return "{:.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, unit, suffix)
         num /= 1024.0
     return "{:.{}f}{}{}".format(num, 1 if num % 1 > 0 else 0, 'Yi', suffix)
 
@@ -54,30 +54,34 @@ def main():
         print("Executed {}".format(now()))
         start = time.time()
     
-    top = os.getcwd()
-    print("Analyzing {}".format(top))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("directory", nargs="?", help="top directory to analyze [%(default)s]", default=os.getcwd())
+    parser.add_argument("-c", "--count", help="number of largest directories to show [%(default)s]", type=int, default=COUNT)
+    arguments = parser.parse_args()
+    directory = arguments.directory
+    count = arguments.count
+    
+    print("Analyzing {}".format(directory))
     usage = {}
-    for path, dirs, files in os.walk(top):
+    for path, dirs, files in os.walk(directory):
         print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
+    
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
     widthCount = places(len(usage), min=2)
+    widthIndex = places(min(count,len(usage)), min=5-1-widthCount)
+    other = sum(map(lambda pair: pair[1], usage[count:]))
     total = sum(map(lambda pair: pair[1], usage))
-    widthTotal = places(total, mode=MODE)
-    for i, (path, size) in enumerate(usage[:COUNT]):
-        print("{:{}}/{} {:>{}} {}".format(
-            i+1, widthCount,
-            len(usage),
-            format(size, mode=MODE), widthTotal,
-            path))
-    if (COUNT < len(usage)):
-        print("{:>{}} {:>{}}".format(
-            "OTHER", 2*widthCount+1,
-            format(sum(map(lambda pair: pair[1], usage[COUNT:])), mode=MODE), widthTotal))
-    print("{:>{}} {:>{}}".format(
-        "TOTAL", 2*widthCount+1,
-        format(total, mode=MODE), widthTotal))
+    widthSize = max(
+        max(map(lambda pair: places(pair[1], mode=MODE), usage[:count])),
+        places(other, mode=MODE),
+        places(total, mode=MODE))
+    for i, (path, size) in enumerate(usage[:count]):
+        print("{:{}}/{} {:>{}} {}".format(i+1, widthIndex, len(usage), format(size, mode=MODE), widthSize, path))
+    if (count < len(usage)):
+        print("{:>{}} {:>{}}".format("OTHER", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
+    print("{:>{}} {:>{}}".format("TOTAL", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
     
     if VERBOSE:
         elapsed = time.time() - start
