@@ -68,6 +68,7 @@ def main():
     print("\r         {: <{}}\r".format("", WIDTH), end="")
     usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
     widthCount = places(len(usage), min=2)
+    widthIndex = places(min(count,len(usage)), min=5-1-widthCount)
     other = sum(map(lambda pair: pair[1], usage[count:]))
     total = sum(map(lambda pair: pair[1], usage))
     widthSize = max(
