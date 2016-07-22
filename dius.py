@@ -76,16 +76,16 @@ def main():
         places(total, mode=MODE))
     for i, (path, size) in enumerate(usage[:count]):
         print("{:{}}/{} {:>{}} {}".format(
-            i+1, widthCount,
+            i+1, widthIndex,
             len(usage),
             format(size, mode=MODE), widthSize,
             path))
     if (count < len(usage)):
         print("{:>{}} {:>{}}".format(
-            "OTHER", 2*widthCount+1,
+            "OTHER", widthIndex+1+widthCount,
             format(other, mode=MODE), widthSize))
     print("{:>{}} {:>{}}".format(
-        "TOTAL", 2*widthCount+1,
+        "TOTAL", widthIndex+1+widthCount,
         format(total, mode=MODE), widthSize))
     
     if VERBOSE:
