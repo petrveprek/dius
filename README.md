@@ -1,6 +1,6 @@
 # Welcome to *dius*
 
-__*dius*__ -- __*di*__sk __*us*__age
+__*dius*__ -- **_di_**sk **_us_**age
 
 # Usage
 
