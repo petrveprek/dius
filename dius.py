@@ -5,7 +5,7 @@
 import argparse, enum, math, operator, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "0.0.0"
+VERSION = "0.1"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
