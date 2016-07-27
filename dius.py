@@ -2,10 +2,10 @@
 # Copyright (c) 2016 Petr Veprek
 """Disk Usage"""
 
-import argparse, enum, math, operator, os, string, sys, time
+import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "0.1"
+VERSION = "0.2"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -68,9 +68,9 @@ def main():
         usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
     
-    usage = sorted(usage.items(), key=operator.itemgetter(1), reverse=True)
-    widthCount = places(len(usage), min=2)
-    widthIndex = places(min(count,len(usage)), min=5-1-widthCount)
+    usage = sorted(usage.items(), key=lambda item:(-item[1], item[0]))
+    widthCount = places(len(usage), min=2, mode=Mode.grouped)
+    widthIndex = places(count, min=5-1-widthCount, mode=Mode.grouped)
     other = sum(map(lambda pair: pair[1], usage[count:]))
     total = sum(map(lambda pair: pair[1], usage))
     widthSize = max(
@@ -78,7 +78,7 @@ def main():
         places(other, mode=MODE),
         places(total, mode=MODE))
     for i, (path, size) in enumerate(usage[:count]):
-        print("{:{}}/{} {:>{}} {}".format(i+1, widthIndex, len(usage), format(size, mode=MODE), widthSize, path))
+        print("{:>{}}/{} {:>{}} {}".format(format(i+1, mode=Mode.grouped), widthIndex, format(len(usage), mode=Mode.grouped), format(size, mode=MODE), widthSize, path))
     if (count < len(usage)):
         print("{:>{}} {:>{}}".format("OTHER", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
     print("{:>{}} {:>{}}".format("TOTAL", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
