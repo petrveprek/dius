@@ -1,6 +1,6 @@
 # v0.3
 2016/8/7
-- Improved output formatting
+- Improved output format
 
 # v0.2
 2016/7/27

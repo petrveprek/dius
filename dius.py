@@ -63,10 +63,16 @@ def main():
     
     print("Analyzing {}".format(directory))
     usage = {}
+    numFiles = 0
     for path, dirs, files in os.walk(directory):
         print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
-        usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
+        files = list(filter(os.path.isfile, map(lambda file: os.path.join(path, file), files)))
+        numFiles += len(files)
+        usage[path] = sum(map(os.path.getsize, files))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
+    print("Found {} director{} with {} file{}".format(
+        format(len(usage), mode=Mode.grouped), "y" if len(usage) == 1 else "ies",
+        format(numFiles, mode=Mode.grouped), "" if numFiles == 1 else "s"))
     
     usage = sorted(usage.items(), key=lambda item:(-item[1], item[0]))
     widthCount = places(len(usage), min=2, mode=Mode.grouped)
