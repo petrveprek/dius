@@ -5,7 +5,7 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "0.2"
+VERSION = "0.3"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -62,11 +62,24 @@ def main():
     count = arguments.count
     
     print("Analyzing {}".format(directory))
+    started = time.time()
     usage = {}
+    numFiles = 0
     for path, dirs, files in os.walk(directory):
         print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
-        usage[path] = sum(map(os.path.getsize, filter(os.path.isfile, map(lambda file: os.path.join(path, file), files))))
+        files = list(filter(os.path.isfile, map(lambda file: os.path.join(path, file), files)))
+        numFiles += len(files)
+        usage[path] = sum(map(os.path.getsize, files))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
+    seconds = max(1, round(time.time() - started))
+    dirRate = round(len(usage) / seconds, 1)
+    fileRate = round(numFiles / seconds, 1)
+    print("Found {} director{} with {} file{} in {} second{} ({} director{}/s, {} file{}/s)".format(
+        format(len(usage), mode=Mode.grouped), "y" if len(usage) == 1 else "ies",
+        format(numFiles, mode=Mode.grouped), "" if numFiles == 1 else "s",
+        format(seconds, mode=Mode.grouped), "" if seconds == 1 else "s",
+        format(dirRate, mode=Mode.grouped), "y" if dirRate == 1 else "ies",
+        format(fileRate, mode=Mode.grouped), "" if fileRate == 1 else "s"))
     
     usage = sorted(usage.items(), key=lambda item:(-item[1], item[0]))
     widthCount = places(len(usage), min=2, mode=Mode.grouped)
@@ -80,8 +93,8 @@ def main():
     for i, (path, size) in enumerate(usage[:count]):
         print("{:>{}}/{} {:>{}} {}".format(format(i+1, mode=Mode.grouped), widthIndex, format(len(usage), mode=Mode.grouped), format(size, mode=MODE), widthSize, path))
     if (count < len(usage)):
-        print("{:>{}} {:>{}}".format("OTHER", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
-    print("{:>{}} {:>{}}".format("TOTAL", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
+        print("{:>{}} {:>{}}".format("Other", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
+    print("{:>{}} {:>{}}".format("Total", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
     
     if VERBOSE:
         elapsed = time.time() - start

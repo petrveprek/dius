@@ -1,3 +1,8 @@
+# v0.3
+2016/8/7
+- Added scan rate
+- Improved output info and format
+
 # v0.2
 2016/7/27
 - Improved output sorting and formatting
