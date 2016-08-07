@@ -25,7 +25,7 @@ optional arguments:
 >dius.py \Windows -c 10
 Disk Usage 0.3
 Analyzing \Windows
-Found 24,638 directories with 134,766 files
+Found 24,638 directories with 134,766 files in 74 seconds (332.9 directories/s, 1,821.2 files/s)
  1/24,638   8.5GiB \Windows\Installer
  2/24,638   2.0GiB \Windows\System32
  3/24,638   1.2GiB \Windows\SysWOW64

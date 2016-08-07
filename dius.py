@@ -62,6 +62,7 @@ def main():
     count = arguments.count
     
     print("Analyzing {}".format(directory))
+    started = time.time()
     usage = {}
     numFiles = 0
     for path, dirs, files in os.walk(directory):
@@ -70,9 +71,15 @@ def main():
         numFiles += len(files)
         usage[path] = sum(map(os.path.getsize, files))
     print("\r         {: <{}}\r".format("", WIDTH), end="")
-    print("Found {} director{} with {} file{}".format(
+    seconds = max(1, round(time.time() - started))
+    dirRate = round(len(usage) / seconds, 1)
+    fileRate = round(numFiles / seconds, 1)
+    print("Found {} director{} with {} file{} in {} second{} ({} director{}/s, {} file{}/s)".format(
         format(len(usage), mode=Mode.grouped), "y" if len(usage) == 1 else "ies",
-        format(numFiles, mode=Mode.grouped), "" if numFiles == 1 else "s"))
+        format(numFiles, mode=Mode.grouped), "" if numFiles == 1 else "s",
+        format(seconds, mode=Mode.grouped), "" if seconds == 1 else "s",
+        format(dirRate, mode=Mode.grouped), "y" if dirRate == 1 else "ies",
+        format(fileRate, mode=Mode.grouped), "" if fileRate == 1 else "s"))
     
     usage = sorted(usage.items(), key=lambda item:(-item[1], item[0]))
     widthCount = places(len(usage), min=2, mode=Mode.grouped)
