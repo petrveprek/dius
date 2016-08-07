@@ -5,7 +5,7 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "0.2"
+VERSION = "0.3"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -80,8 +80,8 @@ def main():
     for i, (path, size) in enumerate(usage[:count]):
         print("{:>{}}/{} {:>{}} {}".format(format(i+1, mode=Mode.grouped), widthIndex, format(len(usage), mode=Mode.grouped), format(size, mode=MODE), widthSize, path))
     if (count < len(usage)):
-        print("{:>{}} {:>{}}".format("OTHER", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
-    print("{:>{}} {:>{}}".format("TOTAL", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
+        print("{:>{}} {:>{}}".format("Other", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
+    print("{:>{}} {:>{}}".format("Total", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
     
     if VERBOSE:
         elapsed = time.time() - start
