@@ -6,8 +6,10 @@ __*dius*__ -- **_di_**sk **_us_**age
 
 ```
 >dius.py --help
-Disk Usage 0.3
-usage: dius.py [-h] [-c COUNT] [directory]
+Disk Usage 0.4
+usage: dius.py [-h] [-c COUNT]
+               [-w {12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179}]
+               [directory]
 
 positional arguments:
   directory             top directory to analyze
@@ -17,27 +19,29 @@ optional arguments:
   -h, --help            show this help message and exit
   -c COUNT, --count COUNT
                         number of largest directories to show [20]
+  -w {12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179}, --width {12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179}
+                        width of scanning progress display [80]
 ```
 
 # Example
 
 ```
 >dius.py \Windows -c 10
-Disk Usage 0.3
+Disk Usage 0.4
 Analyzing \Windows
-Found 24,638 directories with 134,766 files in 74 seconds (332.9 directories/s, 1,821.2 files/s)
- 1/24,638   8.5GiB \Windows\Installer
- 2/24,638   2.0GiB \Windows\System32
- 3/24,638   1.2GiB \Windows\SysWOW64
- 4/24,638 498.5MiB \Windows\Installer\$PatchCache$\Managed\00004109D30000000000000000F01FEC\14.0.4763
- 5/24,638 398.2MiB \Windows\Fonts
- 6/24,638 365.6MiB \Windows\System32\DriverStore\FileRepository\nvlti.inf_amd64_338da84652515de3
- 7/24,638 307.5MiB \Windows\System32\DriverStore\FileRepository\igdlh64.inf_amd64_41faaf35503f8252
- 8/24,638 244.1MiB \Windows\System32\DriverStore\FileRepository\hdxrt.inf_amd64_951ddfb196f08e73
- 9/24,638 214.2MiB \Windows\System32\DriverStore\FileRepository\hdxnecma.inf_amd64_7db117052649a003
-10/24,638 212.4MiB \Windows\System32\DriverStore\FileRepository\hdxsgma4.inf_amd64_0db9f6ff73368555
-    Other  20.1GiB
-    Total  34.0GiB
+Found 24,762 directories with 127,691 files in 67 seconds (369.6 directories/s, 1,905.8 files/s)
+ 1/24,762   8.6GiB \Windows\Installer
+ 2/24,762   2.0GiB \Windows\System32
+ 3/24,762   1.2GiB \Windows\SysWOW64
+ 4/24,762 498.5MiB \Windows\Installer\$PatchCache$\Managed\00004109D30000000000000000F01FEC\14.0.4763
+ 5/24,762 398.2MiB \Windows\Fonts
+ 6/24,762 365.6MiB \Windows\System32\DriverStore\FileRepository\nvlti.inf_amd64_338da84652515de3
+ 7/24,762 307.5MiB \Windows\System32\DriverStore\FileRepository\igdlh64.inf_amd64_41faaf35503f8252
+ 8/24,762 244.1MiB \Windows\System32\DriverStore\FileRepository\hdxrt.inf_amd64_951ddfb196f08e73
+ 9/24,762 214.2MiB \Windows\System32\DriverStore\FileRepository\hdxnecma.inf_amd64_7db117052649a003
+10/24,762 212.4MiB \Windows\System32\DriverStore\FileRepository\hdxsgma4.inf_amd64_0db9f6ff73368555
+    Other  20.0GiB
+    Total  34.1GiB
 ```
 
 Copyright (c) 2016 Petr Vepřek

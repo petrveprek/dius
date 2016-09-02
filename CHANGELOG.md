@@ -1,3 +1,7 @@
+# v0.4
+2016/9/3
+- Added progress width parameter
+
 # v0.3
 2016/8/7
 - Added scan rate

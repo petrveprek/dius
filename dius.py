@@ -5,11 +5,12 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "0.3"
+VERSION = "0.4"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
 MODE = Mode.gazillion
+MINWIDTH = 9+0+3
 WIDTH = 80
 
 def now(on="on", at="at"):
@@ -57,20 +58,22 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("directory", nargs="?", help="top directory to analyze [%(default)s]", default=os.getcwd())
     parser.add_argument("-c", "--count", help="number of largest directories to show [%(default)s]", type=int, default=COUNT)
+    parser.add_argument("-w", "--width", help="width of scanning progress display [%(default)s]", type=int, choices=range(MINWIDTH,os.get_terminal_size().columns), default=WIDTH)
     arguments = parser.parse_args()
     directory = arguments.directory
     count = arguments.count
+    width = arguments.width
     
     print("Analyzing {}".format(directory))
     started = time.time()
     usage = {}
     numFiles = 0
     for path, dirs, files in os.walk(directory):
-        print("\rScanning {: <{}}".format(printable(path, WIDTH), WIDTH), end="")
+        print("\rScanning {: <{}}".format(printable(path, width-9), width-9), end="")
         files = list(filter(os.path.isfile, map(lambda file: os.path.join(path, file), files)))
         numFiles += len(files)
         usage[path] = sum(map(os.path.getsize, files))
-    print("\r         {: <{}}\r".format("", WIDTH), end="")
+    print("\r         {: <{}}\r".format("", width-9), end="")
     seconds = max(1, round(time.time() - started))
     dirRate = round(len(usage) / seconds, 1)
     fileRate = round(numFiles / seconds, 1)
