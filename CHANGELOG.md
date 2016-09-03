@@ -1,6 +1,9 @@
-# v0.4
+# v1.0
 2016/9/3
 - Added progress width parameter
+- Maximized progress indicator
+- Fixed console scrolling
+- Update usage help
 
 # v0.3
 2016/8/7
