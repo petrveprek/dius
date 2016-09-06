@@ -5,13 +5,13 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "1.0"
+VERSION = "1.1"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
 MODE = Mode.gazillion
 MIN_WIDTH = 9+0+3 # intro + directory + ellipsis
-MAX_WIDTH = os.get_terminal_size().columns
+MAX_WIDTH = os.get_terminal_size().columns if sys.stdout.isatty() else 80
 WIDTH = MAX_WIDTH
 WIDTH = min(max(WIDTH, MIN_WIDTH), MAX_WIDTH)
 
@@ -70,13 +70,13 @@ def main():
     started = time.time()
     usage = {}
     numFiles = 0
-    backtrack = "\r" if width < MAX_WIDTH else "\033[F"
+    BACKTRACK = ("\r" if width < MAX_WIDTH else "\033[F") if sys.stdout.isatty() else "\n"
     for path, dirs, files in os.walk(directory):
-        print("Scanning {: <{}}".format(printable(path, width-9), width-9), end=backtrack)
+        print("Scanning {: <{}}".format(printable(path, width-9), width-9), end=BACKTRACK)
         files = list(filter(os.path.isfile, map(lambda file: os.path.join(path, file), files)))
         numFiles += len(files)
         usage[path] = sum(map(os.path.getsize, files))
-    print("         {: <{}}".format("", width-9), end=backtrack)
+    print("         {: <{}}".format("", width-9), end=BACKTRACK)
     seconds = max(1, round(time.time() - started))
     dirRate = round(len(usage) / seconds, 1)
     fileRate = round(numFiles / seconds, 1)

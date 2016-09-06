@@ -1,3 +1,7 @@
+# v1.1
+2016/9/6
+- Fixed progress when redirecting output
+
 # v1.0
 2016/9/3
 - Added progress width parameter
