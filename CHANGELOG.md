@@ -1,3 +1,8 @@
+# v1.1
+2016/9/7
+- Added 'silent' option
+- Fixed progress when redirecting output
+
 # v1.0
 2016/9/3
 - Added progress width parameter
