@@ -1,5 +1,6 @@
 # v1.1
-2016/9/6
+2016/9/7
+- Added 'silent' option
 - Fixed progress when redirecting output
 
 # v1.0

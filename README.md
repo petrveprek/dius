@@ -7,7 +7,7 @@ __*dius*__ -- **_di_**sk **_us_**age
 ```
 >dius.py --help
 Disk Usage 1.1
-usage: dius.py [-h] [-c COUNT] [-w <12,180>] [directory]
+usage: dius.py [-h] [-c COUNT] [-w <12,180>] [-s] [directory]
 
 positional arguments:
   directory             set top directory to analyze
@@ -19,6 +19,7 @@ optional arguments:
                         set number of largest directories to show [20]
   -w <12,180>, --width <12,180>
                         set console width for progress indicator [180]
+  -s, --silent          suppress progress messages [false]
 ```
 
 # Example
@@ -27,7 +28,7 @@ optional arguments:
 >dius.py \Windows -c 10
 Disk Usage 1.1
 Analyzing \Windows
-Found 24,765 directories with 127,728 files in 88 seconds (281.4 directories/s, 1,451.5 files/s)
+Found 24,765 directories with 127,731 files in 86 seconds (288.0 directories/s, 1,485.2 files/s)
  1/24,765   8.6GiB \Windows\Installer
  2/24,765   2.0GiB \Windows\System32
  3/24,765   1.2GiB \Windows\SysWOW64
@@ -39,7 +40,7 @@ Found 24,765 directories with 127,728 files in 88 seconds (281.4 directories/s, 
  9/24,765 214.2MiB \Windows\System32\DriverStore\FileRepository\hdxnecma.inf_amd64_7db117052649a003
 10/24,765 212.4MiB \Windows\System32\DriverStore\FileRepository\hdxsgma4.inf_amd64_0db9f6ff73368555
     Other  20.0GiB
-    Total  34.0GiB
+    Total  34.1GiB
 ```
 
 Copyright (c) 2016 Petr Vepřek
