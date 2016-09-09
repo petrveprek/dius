@@ -1,3 +1,7 @@
+# v1.2
+2016/9/9
+- Added brief description to help
+
 # v1.1
 2016/9/7
 - Added 'silent' option
