@@ -5,7 +5,7 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "1.1"
+VERSION = "1.2"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -57,9 +57,9 @@ def main():
         print("Executed {}".format(now()))
         start = time.time()
     
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Prints `COUNT` largest directories found under top `directory`.")
     parser.add_argument("directory", nargs="?", help="set top directory to analyze [%(default)s]", default=os.getcwd())
-    parser.add_argument("-c", "--count", help="set number of largest directories to show [%(default)s]", type=int, default=COUNT)
+    parser.add_argument("-c", "--count", help="set number of largest directories to print [%(default)s]", type=int, default=COUNT)
     parser.add_argument("-w", "--width", help="set console width for progress indicator [%(default)s]", metavar="<{},{}>".format(MIN_WIDTH,MAX_WIDTH), type=int, choices=range(MIN_WIDTH,MAX_WIDTH+1), default=WIDTH)
     parser.add_argument("-s", "--silent", help="suppress progress messages [false]", action = "store_true", default=False)
     arguments = parser.parse_args()
