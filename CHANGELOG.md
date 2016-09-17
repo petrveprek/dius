@@ -1,3 +1,8 @@
+# v1.3
+2016/9/17
+- Updated usage help
+- Simplified code
+
 # v1.2
 2016/9/9
 - Added brief description to help

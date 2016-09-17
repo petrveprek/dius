@@ -5,7 +5,7 @@
 import argparse, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "1.2"
+VERSION = "1.3"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -60,13 +60,13 @@ def main():
     parser = argparse.ArgumentParser(description="Prints `COUNT` largest directories found under top `directory`.")
     parser.add_argument("directory", nargs="?", help="set top directory to analyze [%(default)s]", default=os.getcwd())
     parser.add_argument("-c", "--count", help="set number of largest directories to print [%(default)s]", type=int, default=COUNT)
-    parser.add_argument("-w", "--width", help="set console width for progress indicator [%(default)s]", metavar="<{},{}>".format(MIN_WIDTH,MAX_WIDTH), type=int, choices=range(MIN_WIDTH,MAX_WIDTH+1), default=WIDTH)
     parser.add_argument("-s", "--silent", help="suppress progress messages [false]", action = "store_true", default=False)
+    parser.add_argument("-w", "--width", help="set console width for progress indicator [%(default)s]", metavar="<{},{}>".format(MIN_WIDTH,MAX_WIDTH), type=int, choices=range(MIN_WIDTH,MAX_WIDTH+1), default=WIDTH)
     arguments = parser.parse_args()
     directory = arguments.directory
     count = arguments.count
-    width = arguments.width
     silent = arguments.silent
+    width = arguments.width
     
     if not silent:
         print("Analyzing {}".format(directory))
@@ -86,11 +86,11 @@ def main():
         dirRate = round(len(usage) / seconds, 1)
         fileRate = round(numFiles / seconds, 1)
         print("Found {} director{} with {} file{} in {} second{} ({} director{}/s, {} file{}/s)".format(
-            format(len(usage), mode=Mode.grouped), "y" if len(usage) == 1 else "ies",
-            format(numFiles, mode=Mode.grouped), "" if numFiles == 1 else "s",
-            format(seconds, mode=Mode.grouped), "" if seconds == 1 else "s",
-            format(dirRate, mode=Mode.grouped), "y" if dirRate == 1 else "ies",
-            format(fileRate, mode=Mode.grouped), "" if fileRate == 1 else "s"))
+            grouped(len(usage)), "y" if len(usage) == 1 else "ies",
+            grouped(numFiles),   ""  if numFiles == 1   else "s",
+            grouped(seconds),    ""  if seconds == 1    else "s",
+            grouped(dirRate),    "y" if dirRate == 1    else "ies",
+            grouped(fileRate),   ""  if fileRate == 1   else "s"))
     
     usage = sorted(usage.items(), key=lambda item:(-item[1], item[0]))
     widthCount = places(len(usage), min=2, mode=Mode.grouped)
@@ -102,7 +102,7 @@ def main():
         places(other, mode=MODE),
         places(total, mode=MODE))
     for i, (path, size) in enumerate(usage[:count]):
-        print("{:>{}}/{} {:>{}} {}".format(format(i+1, mode=Mode.grouped), widthIndex, format(len(usage), mode=Mode.grouped), format(size, mode=MODE), widthSize, path))
+        print("{:>{}}/{} {:>{}} {}".format(grouped(i+1), widthIndex, grouped(len(usage)), format(size, mode=MODE), widthSize, path))
     if (count < len(usage)):
         print("{:>{}} {:>{}}".format("Other", widthIndex+1+widthCount, format(other, mode=MODE), widthSize))
     print("{:>{}} {:>{}}".format("Total", widthIndex+1+widthCount, format(total, mode=MODE), widthSize))
