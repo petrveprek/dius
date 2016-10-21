@@ -2,10 +2,10 @@
 # Copyright (c) 2016 Petr Veprek
 """Disk Usage"""
 
-import argparse, enum, math, os, string, sys, time
+import argparse, colorama, enum, math, os, string, sys, time
 
 TITLE = "Disk Usage"
-VERSION = "1.3"
+VERSION = "1.4"
 VERBOSE = False
 COUNT = 20
 class Mode(enum.Enum): plain = 0; grouped = 1; gazillion = 2
@@ -21,7 +21,7 @@ def now(on="on", at="at"):
         at + " " if at != "" else "", time.strftime("%H:%M:%S"))
 
 def printable(str, max):
-    str = "".join([char if char in string.printable else "_" for char in str])
+    str = "".join([char if char in string.printable else "?" for char in str])
     if len(str) > max: str = str[:max-3] + "..."
     return str
 
@@ -48,6 +48,7 @@ def places(num, min=0, mode=Mode.plain):
     return max(min, len(format(num, mode)))
 
 def main():
+    colorama.init()
     print("{} {}".format(TITLE, VERSION))
     if VERBOSE:
         print("\a", end="")
@@ -70,7 +71,7 @@ def main():
     
     if not silent:
         print("Analyzing {}".format(directory))
-        BACKTRACK = ("\r" if width < MAX_WIDTH else "\033[F") if sys.stdout.isatty() else "\n"
+        BACKTRACK = ("\r" if width < MAX_WIDTH else "\033[A") if sys.stdout.isatty() else "\n"
     started = time.time()
     usage = {}
     numFiles = 0

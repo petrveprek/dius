@@ -1,3 +1,8 @@
+# v1.4
+2016/10/21
+- Improved terminal handling
+- Normalized text formatting
+
 # v1.3
 2016/9/17
 - Updated usage help

@@ -6,7 +6,7 @@ __*dius*__ -- **_di_**sk **_us_**age
 
 ```
 >dius.py --help
-Disk Usage 1.3
+Disk Usage 1.4
 usage: dius.py [-h] [-c COUNT] [-s] [-w <12,180>] [directory]
 
 Prints `COUNT` largest directories found under top `directory`.
@@ -28,21 +28,21 @@ optional arguments:
 
 ```
 >dius.py \Windows -c 10
-Disk Usage 1.3
+Disk Usage 1.4
 Analyzing \Windows
-Found 26,038 directories with 131,556 files in 93 seconds (280.0 directories/s, 1,414.6 files/s)
- 1/26,038   8.8GiB \Windows\Installer
- 2/26,038   2.0GiB \Windows\System32
- 3/26,038   1.2GiB \Windows\SysWOW64
- 4/26,038 498.5MiB \Windows\Installer\$PatchCache$\Managed\00004109D30000000000000000F01FEC\14.0.4763
- 5/26,038 398.2MiB \Windows\Fonts
- 6/26,038 365.6MiB \Windows\System32\DriverStore\FileRepository\nvlti.inf_amd64_338da84652515de3
- 7/26,038 307.5MiB \Windows\System32\DriverStore\FileRepository\igdlh64.inf_amd64_41faaf35503f8252
- 8/26,038 244.1MiB \Windows\System32\DriverStore\FileRepository\hdxrt.inf_amd64_951ddfb196f08e73
- 9/26,038 214.2MiB \Windows\System32\DriverStore\FileRepository\hdxnecma.inf_amd64_7db117052649a003
-10/26,038 212.4MiB \Windows\System32\DriverStore\FileRepository\hdxsgma4.inf_amd64_0db9f6ff73368555
-    Other  20.1GiB
-    Total  34.4GiB
+Found 24,706 directories with 120,988 files in 37 seconds (667.7 directories/s, 3,269.9 files/s)
+ 1/24,706   8.9GiB \Windows\Installer
+ 2/24,706   2.1GiB \Windows\System32
+ 3/24,706   1.2GiB \Windows\SysWOW64
+ 4/24,706 498.5MiB \Windows\Installer\$PatchCache$\Managed\00004109D30000000000000000F01FEC\14.0.4763
+ 5/24,706 410.8MiB \Windows\System32\DriverStore\FileRepository\nvdmwu.inf_amd64_26aa6356770b2e86
+ 6/24,706 407.9MiB \Windows\System32\DriverStore\FileRepository\nvltwu.inf_amd64_7abb66182eb8ed83
+ 7/24,706 407.4MiB \Windows\System32\DriverStore\FileRepository\nvmiwu.inf_amd64_bd786fe53bff67f7
+ 8/24,706 406.3MiB \Windows\System32\DriverStore\FileRepository\nvamwu.inf_amd64_d4715679184092a8
+ 9/24,706 406.0MiB \Windows\System32\DriverStore\FileRepository\nvcvwu.inf_amd64_ed9974b2e149bbb9
+10/24,706 405.7MiB \Windows\System32\DriverStore\FileRepository\nvblwu.inf_amd64_31f54e2d1ba058d5
+    Other  34.0GiB
+    Total  49.0GiB
 ```
 
 Copyright (c) 2016 Petr Vepřek
